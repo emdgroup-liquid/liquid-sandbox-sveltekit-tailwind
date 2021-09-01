@@ -5,6 +5,8 @@
 	import { setAssetPath } from '@emdgroup-liquid/liquid'
 	import '@emdgroup-liquid/liquid/dist/css/liquid.global.css'
 
+	let ready = false
+
 	if (browser) {
 		import('@emdgroup-liquid/liquid/dist/custom-elements').then((liquid) => {
 			const {
@@ -38,8 +40,10 @@
 			customElements.define('ld-select', LdSelect)
 			customElements.define('ld-theme', LdTheme)
 			customElements.define('ld-tooltip', LdTooltip)
+
+			ready = true
 		})
 	}
 </script>
 
-<main><slot /></main>
+<main style={`visibility: ${ready ? 'inherit' : 'hidden'}`}><slot /></main>
