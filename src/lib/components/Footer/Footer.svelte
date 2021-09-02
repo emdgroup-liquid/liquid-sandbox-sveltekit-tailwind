@@ -26,7 +26,7 @@
 				</svg>
 			</a>
 		</ld-paragraph>
-		<ld-paragraph class="text-wht opacity-50">
+		<ld-paragraph class="text-wht opacity-60">
 			Made with{' '}
 			<ld-icon name="tea-pot" aria-label="lots of tea" class="transform translate-y-ld-4" />{' '}
 			by the UX Strategy & Design Team at EMD Digital
