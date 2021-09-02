@@ -7,10 +7,7 @@ const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
 	preprocess: preprocess({
-		defaults: {
-			style: 'postcss'
-		},
-		postcss: true
+		postcss: true,
 	}),
 
 	kit: {
@@ -23,14 +20,14 @@ const config = {
 					targets: [
 						{
 							src: 'node_modules/@emdgroup-liquid/liquid/dist/liquid/assets/*',
-							dest: 'static/assets'
-						}
+							dest: 'static/assets',
+						},
 					],
-					hook: 'buildStart'
-				})
-			]
-		})
-	}
+					hook: 'buildStart',
+				}),
+			],
+		}),
+	},
 }
 
 export default config
