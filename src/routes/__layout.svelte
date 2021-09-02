@@ -14,6 +14,7 @@
 				LdButton,
 				LdCheckbox,
 				LdHeading,
+				LdIcon,
 				LdInput,
 				LdInputMessage,
 				LdLabel,
@@ -30,6 +31,7 @@
 			customElements.define('ld-button', LdButton)
 			customElements.define('ld-checkbox', LdCheckbox)
 			customElements.define('ld-heading', LdHeading)
+			customElements.define('ld-icon', LdIcon)
 			customElements.define('ld-input', LdInput)
 			customElements.define('ld-input-message', LdInputMessage)
 			customElements.define('ld-label', LdLabel)

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Form from '$lib/components/Form/Form.svelte'
+	import Footer from '$lib/components/Footer/Footer.svelte'
 
 	let currentTheme = 'ocean'
 	let successMessages = [
@@ -39,7 +40,7 @@
 
 <ld-theme name={currentTheme} class="flex flex-col min-h-screen">
 	<ld-notification placement="bottom" />
-	<div class="relative flex items-center" style="min-height: 80vh">
+	<main class="relative flex items-center" style="min-height: 80vh">
 		<ld-bg-cells class="block absolute inset-0" />
 		<div class="container mx-auto px-ld-24 pt-ld-40 pb-24 relative max-w-2xl">
 			<ld-heading level="1" visual-level="b1" class="text-vy mb-ld-40">
@@ -47,9 +48,6 @@
 			</ld-heading>
 			<Form on:changeTheme={onChangeTheme} />
 		</div>
-	</div>
-	<div
-		class="relative flex-grow"
-		style="background: var(--ld-thm-bg-secondary); min-height: 12rem"
-	/>
+	</main>
+	<Footer />
 </ld-theme>
