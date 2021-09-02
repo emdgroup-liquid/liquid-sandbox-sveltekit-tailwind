@@ -30,10 +30,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@emdgroup-liquid/liquid@1.0.0-rc.7":
-  version "1.0.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@emdgroup-liquid/liquid/-/liquid-1.0.0-rc.7.tgz#4ce81f4d22d2de40c34ade3d939a7afab5fc0a17"
-  integrity sha512-ninDNmiN8VBQ27Gl87WV2kkXsFgLp/zPcOd1ZEH0ZJLTUYSXaz73ShIT+BYio1JK3B4aEqpzpwikB+4VOH+fqw==
+"@emdgroup-liquid/liquid@1.0.0-rc.8":
+  version "1.0.0-rc.8"
+  resolved "https://registry.yarnpkg.com/@emdgroup-liquid/liquid/-/liquid-1.0.0-rc.8.tgz#9168df6074ea1ac0a6f217aa979fd3e017cb5324"
+  integrity sha512-Dx0L/5BZFTcLguBLE5gUJoA5Cm248aG+eWFeNYLESq0xCajm68RjcniGLo0wYkovZZ9+JZpoW259RzqLh/Fc0w==
   dependencies:
     "@stencil/core" "^2.7.1"
     tether "^2.0.0"
@@ -2069,6 +2069,11 @@ svelte-check@^2.2.5:
     source-map "^0.7.3"
     svelte-preprocess "^4.0.0"
     typescript "*"
+
+svelte-forms@^1.1.51:
+  version "1.1.51"
+  resolved "https://registry.yarnpkg.com/svelte-forms/-/svelte-forms-1.1.51.tgz#b23b70173e08c232afe1dcb39fd0494eb1da610e"
+  integrity sha512-4SRwe0pJA9KvirkLAbi2uf4LWA3PoUS34bJkpqbgNFXERFVtSCbt9ZJ3Phu/bbRbYuQ6MptD7HuqsDZbCXd8Hw==
 
 svelte-hmr@^0.14.7:
   version "0.14.7"

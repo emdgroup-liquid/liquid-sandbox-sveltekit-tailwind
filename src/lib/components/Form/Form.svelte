@@ -1,41 +1,70 @@
 <script lang="ts">
+	import { form } from 'svelte-forms'
 	import { createEventDispatcher } from 'svelte'
 	import { titles } from './titles'
 
 	const dispatch = createEventDispatcher()
 
 	let fullName = ''
+	let fullNameDirty = false
 	let title = ''
 	let email = ''
+	let emailDirty = false
 	let website = ''
-	let formInvalid = true
+	let websiteDirty = false
+	let termsAccepted = false
+	let termsAcceptedDirty = false
+
+	const validator = form(
+		() => ({
+			fullName: {
+				value: fullName,
+				validators: ['required'],
+			},
+			email: { value: email, validators: ['required', 'email'] },
+			website: { value: website, validators: ['url'] },
+			termsAccepted: {
+				value: termsAccepted,
+				validators: [(value) => ({ valid: value === true, name: 'checked' })],
+			},
+		}),
+		{
+			initCheck: false,
+			validateOnChange: false,
+			stopAtFirstError: false,
+			stopAtFirstFieldError: true,
+		}
+	)
 
 	function onThemeChange(theme) {
 		dispatch('changeTheme', theme)
 	}
+
 	function onCancel() {
 		dispatchEvent(new CustomEvent('ldNotificationClear'))
 		dispatchEvent(
 			new CustomEvent('ldNotificationAdd', {
 				detail: {
 					content: "This button doesn't really do anything. 👻",
-					type: 'warn'
-				}
+					type: 'warn',
+				},
 			})
 		)
 	}
+
 	function onSubmit() {
-		if (formInvalid) {
-			dispatchEvent(new CustomEvent('ldNotificationClear'))
-			dispatchEvent(
-				new CustomEvent('ldNotificationAdd', {
-					detail: {
-						content: 'The form is invalid! 😱',
-						type: 'alert'
-					}
-				})
-			)
-		} else {
+		fullNameDirty = true
+		emailDirty = true
+		websiteDirty = true
+		termsAcceptedDirty = true
+		validator.validate()
+
+		const isFormValid = !Object.keys($validator.fields).some((key) => {
+			const field = $validator.fields[key]
+			return !field.valid && field.errors.includes('required')
+		})
+
+		if (isFormValid) {
 			dispatchEvent(new CustomEvent('ldNotificationClear'))
 			dispatchEvent(
 				new CustomEvent('ldNotificationAdd', {
@@ -47,8 +76,18 @@
 								if you have any questions!
 							</span>`,
 						type: 'info',
-						timeout: 0
-					}
+						timeout: 0,
+					},
+				})
+			)
+		} else {
+			dispatchEvent(new CustomEvent('ldNotificationClear'))
+			dispatchEvent(
+				new CustomEvent('ldNotificationAdd', {
+					detail: {
+						content: 'The form is invalid! 😱',
+						type: 'alert',
+					},
 				})
 			)
 		}
@@ -63,9 +102,9 @@
 		<a href="https://emdgroup-liquid.github.io/liquid/" class="font-bold hover:underline">
 			Liquid Oxygen
 		</a>{' '}
-		used in combination with Vue 3, Typescript, Tailwind CSS and Vite.
+		used in combination with SvelteKit and Tailwind CSS.
 	</ld-paragraph>
-	<ld-paragraph class="mb-ld-24"> Let's change the theme of the app first: </ld-paragraph>
+	<ld-paragraph class="mb-ld-24">Let's change the theme of the app first:</ld-paragraph>
 
 	<ld-label class="mb-ld-32 w-full">
 		App Theme
@@ -104,12 +143,7 @@
 					</ld-option>
 				{/each}
 			</ld-select>
-			<ld-input-message
-				mode="valid"
-				style={{
-					visibility: title ? 'inherit' : 'hidden'
-				}}
-			>
+			<ld-input-message mode="valid" style={`visibility: ${title ? 'inherit' : 'hidden'}`}>
 				Good pick.
 			</ld-input-message>
 		</ld-label>
@@ -120,30 +154,23 @@
 				placeholder="e.g. Jason Parse"
 				tone="dark"
 				value={fullName}
-				invalid={false}
+				invalid={fullNameDirty && !$validator?.fields.fullName.valid}
 				on:input={(ev) => {
 					fullName = ev.target.value
+					if (fullNameDirty) validator.validate()
 				}}
-				on:blur={(ev) => {
-					console.info('ev', ev)
-					// v$.fullName.$touch()
+				on:blur={() => {
+					fullNameDirty = fullNameDirty || !!fullName
+					if (fullNameDirty) validator.validate()
 				}}
 			/>
-			<!--{v$.fullName.$error ? (-->
-			{#if false}
-				<ld-input-message mode="error">
-					<!--{v$.fullName.$errors[0].$message}-->
-				</ld-input-message>
-			{:else}
-				<ld-input-message
-					mode="valid"
-					style={{
-						// visibility: v$.fullName.$dirty ? 'inherit' : 'hidden',
-					}}
-				>
-					Lovely name.
-				</ld-input-message>
-			{/if}
+
+			<ld-input-message
+				mode={$validator?.fields.fullName.valid ? 'valid' : 'error'}
+				style={`visibility: ${fullNameDirty ? 'inherit' : 'hidden'}`}
+			>
+				{$validator?.fields.fullName.valid ? 'Lovely name.' : 'Your full name is required.'}
+			</ld-input-message>
 		</ld-label>
 
 		<ld-label>
@@ -153,31 +180,26 @@
 				placeholder="e.g. jason.parse@example.com"
 				tone="dark"
 				value={email}
-				invalid={false}
+				invalid={emailDirty && !$validator?.fields.email.valid}
 				on:input={(ev) => {
 					email = ev.target.value
+					if (emailDirty) validator.validate()
 				}}
-				on:blur={(ev) => {
-					console.info('ev', ev)
-					// v$.email.$touch()
+				on:blur={() => {
+					emailDirty = emailDirty || !!email
+					if (emailDirty) validator.validate()
 				}}
 			/>
-			<!--{v$.email.$error ? (-->
-			{#if false}
-				<ld-input-message mode="error">
-					Yolo
-					<!--{v$.email.$errors[0].$message}-->
-				</ld-input-message>
-			{:else}
-				<ld-input-message
-					mode="valid"
-					style={{
-						// visibility: v$.email.$dirty ? 'inherit' : 'hidden',
-					}}
-				>
-					Lovely email address.
-				</ld-input-message>
-			{/if}
+			<ld-input-message
+				mode={$validator?.fields.email.valid ? 'valid' : 'error'}
+				style={`visibility: ${emailDirty ? 'inherit' : 'hidden'}`}
+			>
+				{$validator?.fields.email.valid
+					? 'Lovely email address.'
+					: $validator.fields.email.errors.includes('email')
+					? 'This email address is invalid.'
+					: 'Your email address is required.'}
+			</ld-input-message>
 		</ld-label>
 
 		<ld-label>
@@ -187,31 +209,22 @@
 				placeholder="e.g. https://example.com"
 				tone="dark"
 				value={website}
-				invalid={false}
+				invalid={(website && websiteDirty && !$validator?.fields.website.valid) || undefined}
 				on:input={(ev) => {
 					website = ev.target.value
+					if (websiteDirty) validator.validate()
 				}}
-				on:blur={(ev) => {
-					console.info('ev', ev)
-					//v$.website.$touch()
+				on:blur={() => {
+					websiteDirty = websiteDirty || !!website
+					if (websiteDirty) validator.validate()
 				}}
 			/>
-			<!--{v$.website.$error ? (-->
-			{#if false}
-				<ld-input-message mode="error">
-					Yolo
-					<!--{v$.website.$errors[0].$message}-->
-				</ld-input-message>
-			{:else}
-				<ld-input-message
-					mode="valid"
-					style={{
-						// visibility: website && v$.website.$dirty ? 'inherit' : 'hidden'
-					}}
-				>
-					You even have a website! 👍
-				</ld-input-message>
-			{/if}
+			<ld-input-message
+				mode={$validator?.fields.website.valid ? 'valid' : 'error'}
+				style={`visibility: ${website && websiteDirty ? 'inherit' : 'hidden'}`}
+			>
+				{$validator?.fields.website.valid ? 'You even have a website! 👍' : 'This URL is invalid.'}
+			</ld-input-message>
 		</ld-label>
 	</div>
 
@@ -222,8 +235,23 @@
 
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-ld-24 items-center">
 		<ld-label position="right" size="m">
-			<span>I accept the terms (none).</span>
-			<ld-checkbox tone="dark" />
+			<span class:text-rr={termsAcceptedDirty && !$validator?.fields.termsAccepted.valid}
+				>I accept the terms (none).</span
+			>
+			<ld-checkbox
+				tone="dark"
+				checked={termsAccepted}
+				invalid={termsAcceptedDirty && !$validator?.fields.termsAccepted.valid}
+				on:input={() => {
+					termsAccepted = !termsAccepted
+					termsAcceptedDirty = true
+					validator.validate()
+				}}
+				on:blur={() => {
+					termsAcceptedDirty = true
+					validator.validate()
+				}}
+			/>
 		</ld-label>
 
 		<div class="grid grid-cols-2 gap-ld-16">

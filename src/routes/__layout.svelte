@@ -23,7 +23,7 @@
 				LdParagraph,
 				LdSelect,
 				LdTheme,
-				LdTooltip
+				LdTooltip,
 			} = liquid
 			setAssetPath(window.location.origin)
 			customElements.define('ld-bg-cells', LdBgCells)

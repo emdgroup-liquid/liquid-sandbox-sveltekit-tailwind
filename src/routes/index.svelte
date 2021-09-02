@@ -16,7 +16,7 @@
 		'Mind-blowing! 🤯️',
 		'Excellent! 👌️',
 		'Delicious! 🤤️',
-		'Outa space! 👽'
+		'Outa space! 👽',
 	]
 
 	function onChangeTheme(ev) {
@@ -28,8 +28,8 @@
 					detail: {
 						content: successMessages[0],
 						type: 'info',
-						timeout: 2000
-					}
+						timeout: 2000,
+					},
 				})
 			)
 			successMessages = [...successMessages.slice(1), successMessages[0]]
