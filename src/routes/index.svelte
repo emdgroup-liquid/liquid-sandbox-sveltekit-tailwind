@@ -38,16 +38,14 @@
 	}
 </script>
 
-<ld-theme name={currentTheme} class="flex flex-col min-h-screen">
+<div class={`flex flex-col min-h-screen ld-theme-${currentTheme}`}>
 	<ld-notification placement="bottom" />
 	<main class="relative flex items-center" style="min-height: 80vh">
 		<ld-bg-cells class="block absolute inset-0" />
 		<div class="container mx-auto px-ld-24 pt-ld-40 pb-24 relative max-w-2xl">
-			<ld-heading level="1" visual-level="b1" class="text-vy mb-ld-40">
-				Liquid Sandbox App
-			</ld-heading>
+			<ld-typo variant="b1" class="text-vy mb-ld-40">Liquid Sandbox App</ld-typo>
 			<Form on:changeTheme={onChangeTheme} />
 		</div>
 	</main>
 	<Footer />
-</ld-theme>
+</div>

@@ -1,8 +1,8 @@
-<footer class="relative flex-grow" style="background: var(--ld-thm-bg-secondary)">
+<footer class="relative flex-grow" style="background: var(--ld-thm-primary-active)">
 	<div
 		class="container text-center mx-auto px-ld-24 pt-20 pb-24 max-w-2xl flex flex-col items-center justify-center"
 	>
-		<ld-paragraph class="text-wht mb-ld-12">
+		<ld-typo class="text-wht mb-ld-12">
 			Checkout the source code on
 			<a
 				href="https://github.com/emdgroup-liquid/liquid-sandbox-sveltekit-tailwind"
@@ -25,11 +25,11 @@
 					/>
 				</svg>
 			</a>
-		</ld-paragraph>
-		<ld-paragraph class="text-wht opacity-60">
+		</ld-typo>
+		<ld-typo class="text-wht opacity-60">
 			Made with{' '}
 			<ld-icon name="tea-pot" aria-label="lots of tea" class="transform translate-y-ld-4" />{' '}
 			by the UX Strategy & Design Team at EMD Digital
-		</ld-paragraph>
+		</ld-typo>
 	</div>
 </footer>

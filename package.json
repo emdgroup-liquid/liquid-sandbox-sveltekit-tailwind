@@ -20,29 +20,28 @@
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
   },
   "dependencies": {
-    "@emdgroup-liquid/liquid": "1.0.0-rc.8"
+    "@emdgroup-liquid/liquid": "1.0.0-rc.15"
   },
   "devDependencies": {
     "@sveltejs/adapter-node": "next",
     "@sveltejs/kit": "next",
-    "@tsconfig/svelte": "^2.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.30.0",
-    "@typescript-eslint/parser": "^4.30.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
     "autoprefixer": "^10.3.3",
     "cssnano": "^5.0.8",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-svelte3": "^3.2.0",
-    "prettier": "^2.3.2",
+    "eslint-plugin-svelte3": "^3.2.1",
+    "prettier": "^2.4.1",
     "prettier-plugin-svelte": "^2.4.0",
     "rollup-plugin-copy": "^3.4.0",
-    "svelte": "^3.42.4",
-    "svelte-check": "^2.2.5",
+    "svelte": "^3.42.6",
+    "svelte-check": "^2.2.6",
     "svelte-forms": "^1.1.51",
-    "svelte-preprocess": "^4.8.0",
+    "svelte-preprocess": "^4.9.4",
     "tailwindcss": "^2.2.9",
     "tslib": "^2.3.1",
-    "typescript": "^4.4.2"
+    "typescript": "^4.4.3"
   },
   "type": "module"
 }
