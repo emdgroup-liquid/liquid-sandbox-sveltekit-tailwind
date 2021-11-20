@@ -20,7 +20,7 @@
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
   },
   "dependencies": {
-    "@emdgroup-liquid/liquid": "1.0.0-rc.15"
+    "@emdgroup-liquid/liquid": "1.0.0-rc.16"
   },
   "devDependencies": {
     "@sveltejs/adapter-node": "next",
