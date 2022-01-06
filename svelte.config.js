@@ -14,6 +14,7 @@ const config = {
 		adapter: node(),
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
+		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 		vite: () => ({
 			plugins: [
 				copy({
