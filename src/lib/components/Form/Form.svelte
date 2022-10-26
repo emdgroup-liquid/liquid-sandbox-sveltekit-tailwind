@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { form } from 'svelte-forms'
-	import { createEventDispatcher } from 'svelte'
 	import { titles } from './titles'
-
+	import { createEventDispatcher } from 'svelte'
+	import { form } from 'svelte-forms'
 	const dispatch = createEventDispatcher()
-
 	let fullName = ''
 	let fullNameDirty = false
 	let title = ''
@@ -14,7 +12,6 @@
 	let websiteDirty = false
 	let termsAccepted = false
 	let termsAcceptedDirty = false
-
 	const validator = form(
 		() => ({
 			fullName: {
@@ -35,11 +32,9 @@
 			stopAtFirstFieldError: true,
 		}
 	)
-
 	function onThemeChange(theme) {
 		dispatch('changeTheme', theme)
 	}
-
 	function onCancel() {
 		dispatchEvent(new CustomEvent('ldNotificationClear'))
 		dispatchEvent(
@@ -51,19 +46,16 @@
 			})
 		)
 	}
-
 	function onSubmit() {
 		fullNameDirty = true
 		emailDirty = true
 		websiteDirty = true
 		termsAcceptedDirty = true
 		validator.validate()
-
 		const isFormValid = !Object.keys($validator.fields).some((key) => {
 			const field = $validator.fields[key]
 			return !field.valid && field.errors.includes('required')
 		})
-
 		if (isFormValid) {
 			dispatchEvent(new CustomEvent('ldNotificationClear'))
 			dispatchEvent(
@@ -111,7 +103,7 @@
 	<ld-label class="mb-ld-32 w-full">
 		App Theme
 		<ld-select
-			on:change={(ev) => onThemeChange(ev.detail[0])}
+			on:ldchange={(ev) => onThemeChange(ev.detail[0])}
 			placeholder="Pick a theme"
 			prevent-deselection
 		>

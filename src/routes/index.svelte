@@ -1,7 +1,6 @@
 <script lang="ts">
-	import Form from '$lib/components/Form/Form.svelte'
 	import Footer from '$lib/components/Footer/Footer.svelte'
-
+	import Form from '$lib/components/Form/Form.svelte'
 	let currentTheme = 'ocean'
 	let successMessages = [
 		'Nice! 👍',
@@ -19,7 +18,6 @@
 		'Delicious! 🤤️',
 		'Outa space! 👽',
 	]
-
 	function onChangeTheme(ev) {
 		currentTheme = ev.detail
 		setTimeout(() => {
