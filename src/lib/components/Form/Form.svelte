@@ -1,37 +1,38 @@
 <script lang="ts">
 	import { titles } from './titles'
 	import { createEventDispatcher } from 'svelte'
-	import { form } from 'svelte-forms'
+	import { form, field } from 'svelte-forms'
+	import { required, email as emailValidator, url } from 'svelte-forms/validators'
+	function optional(validation) {
+		return async (value: string | null | undefined) => {
+			const validator = validation(value)
+			const hasValue = !(value === undefined || value === null || value === '')
+			const result = await validator
+			return { valid: result.valid || !hasValue, name: result.name }
+		}
+	}
 	const dispatch = createEventDispatcher()
-	let fullName = ''
 	let fullNameDirty = false
-	let title = ''
-	let email = ''
 	let emailDirty = false
-	let website = ''
 	let websiteDirty = false
 	let termsAccepted = false
 	let termsAcceptedDirty = false
-	const validator = form(
-		() => ({
-			fullName: {
-				value: fullName,
-				validators: ['required'],
-			},
-			email: { value: email, validators: ['required', 'email'] },
-			website: { value: website, validators: ['url'] },
-			termsAccepted: {
-				value: termsAccepted,
-				validators: [(value) => ({ valid: value === true, name: 'checked' })],
-			},
-		}),
-		{
-			initCheck: false,
-			validateOnChange: false,
-			stopAtFirstError: false,
-			stopAtFirstFieldError: true,
-		}
+	let title = ''
+	const fieldOptions = {
+		checkOnInit: false,
+		validateOnChange: false,
+		stopAtFirstError: false,
+	}
+	const fullNameField = field('fullName', '', [required()], fieldOptions)
+	const emailField = field('email', '', [required(), emailValidator()], fieldOptions)
+	const websiteField = field('website', '', [optional(url())], fieldOptions)
+	const termsAcceptedField = field(
+		'termsAccepted',
+		termsAccepted,
+		[(value) => ({ valid: value === true, name: 'checked' })],
+		fieldOptions
 	)
+	const validator = form(fullNameField, emailField, websiteField, termsAcceptedField)
 	function onThemeChange(theme) {
 		dispatch('changeTheme', theme)
 	}
@@ -46,17 +47,13 @@
 			})
 		)
 	}
-	function onSubmit() {
+	async function onSubmit() {
 		fullNameDirty = true
 		emailDirty = true
 		websiteDirty = true
 		termsAcceptedDirty = true
-		validator.validate()
-		const isFormValid = !Object.keys($validator.fields).some((key) => {
-			const field = $validator.fields[key]
-			return !field.valid && field.errors.includes('required')
-		})
-		if (isFormValid) {
+		await validator.validate()
+		if ($validator.valid) {
 			dispatchEvent(new CustomEvent('ldNotificationClear'))
 			dispatchEvent(
 				new CustomEvent('ldNotificationAdd', {
@@ -127,8 +124,9 @@
 			</span>
 			<ld-select
 				placeholder="No title"
-				on:input={(ev) => {
+				on:ldchange={(ev) => {
 					title = ev.detail[0]
+					console.info('title', title)
 				}}
 			>
 				{#each titles as title}
@@ -147,23 +145,23 @@
 			<ld-input
 				placeholder="e.g. Jason Parse"
 				tone="dark"
-				value={fullName}
-				invalid={fullNameDirty && !$validator?.fields.fullName.valid}
+				value={$fullNameField.value}
+				invalid={fullNameDirty && !$fullNameField.valid}
 				on:input={(ev) => {
-					fullName = ev.target.value
+					$fullNameField.value = ev.target.value
 					if (fullNameDirty) validator.validate()
 				}}
 				on:blur={() => {
-					fullNameDirty = fullNameDirty || !!fullName
+					fullNameDirty = fullNameDirty || !!$fullNameField.value
 					if (fullNameDirty) validator.validate()
 				}}
 			/>
 
 			<ld-input-message
-				mode={$validator?.fields.fullName.valid ? 'valid' : 'error'}
+				mode={$fullNameField.valid ? 'valid' : 'error'}
 				style={`visibility: ${fullNameDirty ? 'inherit' : 'hidden'}`}
 			>
-				{$validator?.fields.fullName.valid ? 'Lovely name.' : 'Your full name is required.'}
+				{$fullNameField.valid ? 'Lovely name.' : 'Your full name is required.'}
 			</ld-input-message>
 		</ld-label>
 
@@ -173,26 +171,28 @@
 				type="email"
 				placeholder="e.g. jason.parse@example.com"
 				tone="dark"
-				value={email}
-				invalid={emailDirty && !$validator?.fields.email.valid}
+				value={$emailField.value}
+				invalid={emailDirty && !$emailField.valid}
 				on:input={(ev) => {
-					email = ev.target.value
-					if (emailDirty) validator.validate()
+					$emailField.value = ev.target.value
+					if (emailDirty) {
+						validator.validate()
+					}
 				}}
 				on:blur={() => {
-					emailDirty = emailDirty || !!email
+					emailDirty = emailDirty || !!$emailField.value
 					if (emailDirty) validator.validate()
 				}}
 			/>
 			<ld-input-message
-				mode={$validator?.fields.email.valid ? 'valid' : 'error'}
+				mode={$emailField.valid ? 'valid' : 'error'}
 				style={`visibility: ${emailDirty ? 'inherit' : 'hidden'}`}
 			>
-				{$validator?.fields.email.valid
+				{$emailField.valid
 					? 'Lovely email address.'
-					: $validator.fields.email.errors.includes('email')
-					? 'This email address is invalid.'
-					: 'Your email address is required.'}
+					: $validator.hasError('email.required')
+					? 'Your email address is required.'
+					: 'This email address is invalid.'}
 			</ld-input-message>
 		</ld-label>
 
@@ -202,22 +202,22 @@
 				type="url"
 				placeholder="e.g. https://example.com"
 				tone="dark"
-				value={website}
-				invalid={(website && websiteDirty && !$validator?.fields.website.valid) || undefined}
+				value={$websiteField.value}
+				invalid={($websiteField.value && websiteDirty && !$websiteField.valid) || undefined}
 				on:input={(ev) => {
-					website = ev.target.value
+					$websiteField.value = ev.target.value
 					if (websiteDirty) validator.validate()
 				}}
 				on:blur={() => {
-					websiteDirty = websiteDirty || !!website
+					websiteDirty = websiteDirty || !!$websiteField.value
 					if (websiteDirty) validator.validate()
 				}}
 			/>
 			<ld-input-message
-				mode={$validator?.fields.website.valid ? 'valid' : 'error'}
-				style={`visibility: ${website && websiteDirty ? 'inherit' : 'hidden'}`}
+				mode={$websiteField.valid ? 'valid' : 'error'}
+				style={`visibility: ${$websiteField.value && websiteDirty ? 'inherit' : 'hidden'}`}
 			>
-				{$validator?.fields.website.valid ? 'You even have a website! 👍' : 'This URL is invalid.'}
+				{$websiteField.valid ? 'You even have a website! 👍' : 'This URL is invalid.'}
 			</ld-input-message>
 		</ld-label>
 	</div>
@@ -229,15 +229,15 @@
 
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-ld-24 items-center">
 		<ld-label position="right" size="m">
-			<span class:text-rr={termsAcceptedDirty && !$validator?.fields.termsAccepted.valid}
+			<span class:text-rr={termsAcceptedDirty && !$termsAcceptedField.valid}
 				>I accept the terms (none).</span
 			>
 			<ld-checkbox
 				tone="dark"
-				checked={termsAccepted}
-				invalid={termsAcceptedDirty && !$validator?.fields.termsAccepted.valid}
+				checked={$termsAcceptedField.value}
+				invalid={termsAcceptedDirty && !$termsAcceptedField.valid}
 				on:input={() => {
-					termsAccepted = !termsAccepted
+					$termsAcceptedField.value = !$termsAcceptedField.value
 					termsAcceptedDirty = true
 					validator.validate()
 				}}

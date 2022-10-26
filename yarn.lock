@@ -2938,6 +2938,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-promise@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "is-promise@npm:4.0.0"
+  checksum: 0b46517ad47b00b6358fd6553c83ec1f6ba9acd7ffb3d30a0bf519c5c69e7147c132430452351b8a9fc198f8dd6c4f76f8e6f5a7f100f8c77d57d9e0f4261a8a
+  languageName: node
+  linkType: hard
+
 "is-reference@npm:1.2.1":
   version: 1.2.1
   resolution: "is-reference@npm:1.2.1"
@@ -3123,7 +3130,7 @@ __metadata:
     rollup-plugin-copy: ^3.4.0
     svelte: ^3.42.6
     svelte-check: ^2.2.6
-    svelte-forms: ^1.1.51
+    svelte-forms: ^2.3.1
     svelte-preprocess: ^4.9.4
     tailwindcss: ^2.2.9
     tslib: ^2.3.1
@@ -4721,12 +4728,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-forms@npm:^1.1.51":
-  version: 1.1.51
-  resolution: "svelte-forms@npm:1.1.51"
-  peerDependencies:
-    svelte: ^3.0.0
-  checksum: 7bf70a6d9c559db65e8da8d97c87f36e928bdf6743fec6beeb64d3d792eae9fc42314ce0c418fce8007c1273e3848d61657b27e1e722a9ac9150d2c60ea08251
+"svelte-forms@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "svelte-forms@npm:2.3.1"
+  dependencies:
+    is-promise: ^4.0.0
+  checksum: a7b44b529411c98715706ed8faf1ddf8474e11d81109d2af3b73d85ffb29170fae1c86fd9e1fe69b1e7e51ef0153ce8a39049efc8aa1cadfd277df4b304284ec
   languageName: node
   linkType: hard
 
