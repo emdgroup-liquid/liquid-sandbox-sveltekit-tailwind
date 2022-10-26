@@ -1,6 +1,5 @@
-import preprocess from 'svelte-preprocess'
 import node from '@sveltejs/adapter-node'
-import copy from 'rollup-plugin-copy'
+import preprocess from 'svelte-preprocess'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -12,22 +11,6 @@ const config = {
 
 	kit: {
 		adapter: node(),
-		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte',
-		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-		vite: () => ({
-			plugins: [
-				copy({
-					targets: [
-						{
-							src: 'node_modules/@emdgroup-liquid/liquid/dist/liquid/assets/*',
-							dest: 'static/assets',
-						},
-					],
-					hook: 'buildStart',
-				}),
-			],
-		}),
 	},
 }
 

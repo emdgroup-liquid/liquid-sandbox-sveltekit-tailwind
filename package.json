@@ -10,7 +10,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "svelte-kit build && svelte-kit preview",
-    "dev": "svelte-kit dev",
+    "dev": "vite dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
@@ -22,8 +22,8 @@
     "@emdgroup-liquid/liquid": "^4.0.1"
   },
   "devDependencies": {
-    "@sveltejs/adapter-node": "^1.0.0-next.60",
-    "@sveltejs/kit": "^1.0.0-next.216",
+    "@sveltejs/adapter-node": "^1.0.0-next.99",
+    "@sveltejs/kit": "^1.0.0-next.525",
     "@trivago/prettier-plugin-sort-imports": "^3.4.0",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
@@ -41,7 +41,8 @@
     "svelte-preprocess": "^4.9.4",
     "tailwindcss": "^2.2.9",
     "tslib": "^2.3.1",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.3",
+    "vite": "^3.1.8"
   },
   "type": "module"
 }
